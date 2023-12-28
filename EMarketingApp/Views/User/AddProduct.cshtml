@@ -26,7 +26,7 @@
                 <div class="insidebox">
                     <div class="form-group">
                         <div class="input-group">
-                            <div class="input-group-addon"><span class="bi bi-pen"></span></div>
+                            <div class="input-group-addon"><i class="bi bi-pen"></i></div>
                             @Html.DropDownListFor(x => x.pro_fk_cat, ViewBag.categorylist as SelectList, "--select--", new { @class = "form-control" })
                         </div>
                         <span style="color:red">   @Html.ValidationMessageFor(x => x.pro_fk_cat) </span>
@@ -34,8 +34,7 @@
                     </div>
                     <div class="form-group">
                         <div class="input-group">
-                            <div class="input-group-addon"><span class="bi bi-pen"></span></div>
-                            @*<asp:TextBox ID="TextBox1" runat="server" class="form-control" placeholder="Username" required="required"></asp:TextBox>*@
+                            <div class="input-group-addon"><i class="bi bi-pen"></i></div>
                             @Html.TextBoxFor(x => x.pro_name, new { @class = "form-control", @placeholder = "Product Name" })
 
                         </div>
@@ -54,7 +53,7 @@
 
                     <div class="form-group">
                         <div class="input-group">
-                            <div class="input-group-addon"><i class="bi bi-pen"></i></div>
+                            <div class="input-group-addon bi bi-pen"></div>
                             @Html.TextBoxFor(x => x.pro_des, new { @class = "form-control", @placeholder = "Description" })
                         </div>
                         <span style="color:red">   @Html.ValidationMessageFor(x => x.pro_des) </span>
@@ -64,9 +63,8 @@
 
                     <div class="form-group">
                         <div class="input-group">
-                            <div class="input-group-addon"><span class="bi bi-file"></span></div>
-
-                            <input type="file" name="imgfile" id="imgfile" class="form-control" required="required" />
+                            <div class="input-group-addon bi bi-file"></div>
+                            <input type="file" name="imgfile" id="imgfile" placeholder="Upload Image" class="form-control" required="required" />
                         </div>
 
 

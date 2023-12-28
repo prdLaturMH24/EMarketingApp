@@ -1,0 +1,103 @@
+﻿@model EMarketingApp.Models.tbl_product
+
+@{
+    ViewBag.Title = "Edit Product";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Edit Product</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("Index", "User")">Home</a></li>
+                <li class="breadcrumb-item"><a href="@Url.Action("Products", "User")">Products</a></li>
+                <li class="breadcrumb-item active">Edit Product</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    <section class="section editproduct">
+        <div class="row">
+            <!-- Left side columns -->
+            <div class="col-lg-5">
+                <div class="row">
+                    <img src="@Url.Content(Model.pro_image)" class="mb-5" alt="Category Image" style=" height:100%;width:100% ;border-radius:50px 50px 50px 50px" />
+                </div>
+                <div class="row">
+                    <time class="bx-time"><b>Last Created: </b>@Model.pro_created</time>
+                    <time class="bx-time"><b>Last Updated: </b>@Model.pro_updated</time>
+                </div>
+            </div><!-- End Left side columns -->
+            <div class="col-lg-5">
+                @using (Html.BeginForm("EditProduct", "User", FormMethod.Post, new { enctype = "multipart/form-data", @class = "validate" } ))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-horizontal">
+                        <h4><b>Product:</b> @Html.DisplayFor(model => model.pro_name)</h4>
+                        <hr />
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(model => model.pro_id)
+                        @Html.HiddenFor(model => model.pro_fk_user)
+                        @Html.HiddenFor(model => model.pro_created)
+                        @Html.HiddenFor(model => model.pro_updated)
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.pro_image, "Image: ", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <div class="d-flex">
+                                    <b>Upload Image to Change:</b>
+                                    <input type="file" name="imgfile" id="pro_image" value="@Model.pro_image" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.pro_name, "Name: ", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.pro_name, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.pro_name, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.pro_des, "Description: ", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.pro_des, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.pro_des, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.pro_price, "Price: ", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.pro_price, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.pro_price, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.pro_fk_cat, "Category: ", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownListFor(x => x.pro_fk_cat, ViewBag.categorylist as SelectList, Model.tbl_category.cat_name, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.pro_fk_cat, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p style="color:red">@ViewBag.error</p>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Save" class="btn btn-primary btn-block" />
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </section>
+
+    <div>
+        @Html.ActionLink("Back to List", "Products", null, htmlAttributes: new { @class = "bi-arrow-90deg-left" })
+    </div>
+
+</main>

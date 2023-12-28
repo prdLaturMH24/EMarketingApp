@@ -1,6 +1,9 @@
 ﻿using EMarketingApp.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Migrations;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -107,14 +110,12 @@ namespace EMarketingApp.Controllers
 
                 if (productId == 0)
                 {
-                    ViewBag.error = "Product Id should not be 0";
-                    return RedirectToAction("Products");
+                    return RedirectToAction("Login","Auth");
                 }
 
                 var existingProduct = db.tbl_product.SingleOrDefault(c => c.pro_id == productId);
                 if (existingProduct == null)
                 {
-                    ViewBag.error = "Product is not available";
                     return RedirectToAction("Products");
                 }
                 var imagePath = existingProduct.pro_image;
@@ -123,7 +124,6 @@ namespace EMarketingApp.Controllers
 
                 if (!RemoveImgFile(imagePath))
                 {
-                    ViewBag.error = "File is already removed or does not exist.";
                     return RedirectToAction("Products");
                 }
 
@@ -132,10 +132,113 @@ namespace EMarketingApp.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return RedirectToAction("Error", "Home");
+                return RedirectToAction("Error", "Home",ex);
             }
         }
 
+        public ActionResult EditProduct(int productId)
+        {
+            try
+            {
+                if (Session["u_id"] == null)
+                {
+                    return RedirectToAction("Login", "Auth");
+                }
+                if (productId == 0)
+                {
+                    return RedirectToAction("Login","Auth");
+                }
+
+                var product = db.tbl_product.Include(p => p.tbl_category).SingleOrDefault(p => p.pro_id == productId);
+
+                if (product == null)
+                {
+                    return RedirectToAction("Products");
+                }
+                //Get only active categories
+                List<tbl_category> li = db.tbl_category.Where(c => c.cat_status == 1).ToList();
+                ViewBag.categorylist = new SelectList(li, "cat_id", "cat_name");
+                return View(product);
+            }
+            catch (Exception ex)
+            {
+               return RedirectToAction("Error", "Home", ex);  
+            }
+        }
+
+        [HttpPost]
+        public ActionResult EditProduct(tbl_product product, HttpPostedFileBase imgfile)
+        {
+            try
+            {
+                if (Session["u_id"] == null)
+                {
+                    return RedirectToAction("Login","Auth");
+                }
+                if (product == null) throw new ArgumentNullException(nameof(product));
+
+                var existingProduct = db.tbl_product.Include(p => p.tbl_category).Include(p => p.tbl_user).SingleOrDefault(p => p.pro_id == product.pro_id);
+                if (existingProduct == null)
+                {
+                    return RedirectToAction("Products");
+                }
+
+                var oldImgPath = existingProduct.pro_image;
+                var fileName = Path.GetFileName(oldImgPath);
+                var path = String.Empty;
+
+                if (imgfile != null)
+                {
+                    if (!oldImgPath.Contains(imgfile.FileName))
+                    {
+                        path = UploadImgFile(imgfile,product.pro_name);
+                    }
+                }
+
+                if (path.Equals("-1"))
+                {
+                    // Image upload failed
+                    Response.StatusCode = 500; // Internal Server Error
+                    ViewBag.error = "Image could not be uploaded....";
+                    return View();
+                }
+
+                var editedProduct = new tbl_product();
+                editedProduct.pro_id = product.pro_id;
+                editedProduct.pro_name = product.pro_name;
+                editedProduct.pro_des = product.pro_des;
+                editedProduct.pro_price = product.pro_price;
+                editedProduct.pro_updated = DateTime.Now;
+                editedProduct.pro_created = product.pro_created;
+                editedProduct.pro_fk_cat = product.pro_fk_cat;
+                editedProduct.pro_fk_user = product.pro_fk_user;
+                editedProduct.pro_image = String.IsNullOrEmpty(path) ? oldImgPath : path;
+
+                db.tbl_product.AddOrUpdate(editedProduct);
+                if(db.SaveChanges() > 0 )
+                {
+                   if(imgfile != null)
+                    {
+                        if (!RemoveImgFile(oldImgPath))
+                        {
+                            Response.StatusCode = 500;
+                            ViewBag.error = "Error Occured while deleting old file";
+                            return View(editedProduct);
+                        }
+                    }
+                    return RedirectToAction("EditProduct","User",new {productId = editedProduct.pro_id});
+                }
+                throw new DbUpdateException("Exception occured while editing data");
+            }
+            catch(DbUpdateException ex)
+            {
+                return RedirectToAction("Error", "Home", ex);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home", ex);
+            }
+        }
         private string UploadImgFile(HttpPostedFileBase file, string productName)
         {
             string path = "-1";

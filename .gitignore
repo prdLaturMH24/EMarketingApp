@@ -361,3 +361,14 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Ignore image files
+*.jpg
+*.jpeg
+*.png
+*.gif
+
+# Ignore video files
+*.mp4
+*.avi
+*.mkv

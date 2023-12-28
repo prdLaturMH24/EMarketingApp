@@ -1,0 +1,94 @@
+﻿@model EMarketingApp.Models.tbl_category
+
+@{
+    ViewBag.Title = "Category Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<--!>Checked OK</--!>
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Category Details</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("Index","Admin")">Home</a></li>
+                <li class="breadcrumb-item"><a href="@Url.Action("ViewCategories","Admin")">Categories</a></li>
+                <li class="breadcrumb-item active">Category Details</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <div>
+        <h4><b>Category:</b> @Html.DisplayFor(model => model.cat_name)</h4>
+        <hr />
+        <dl class="dl-horizontal d-lg-table-cell">
+            <dt>
+                @Html.DisplayNameFor(model => model.cat_name):
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.cat_name)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.cat_image):
+            </dt>
+
+            <dd>
+                <img src="@Url.Content(Model.cat_image)" class="mb-5" alt="Category Image" style="height: 75%; width: 75%; border-radius: 25px 25px 25px 25px " />
+            </dd>
+        </dl>
+    </div>
+    <div class="info-card d-flex justify-content-between">
+        <div>
+            <b>
+                @Html.DisplayNameFor(model => model.cat_status):
+            </b>
+            @if (Model.cat_status == 1)
+            {
+                <span>Active</span>
+            }
+            else
+            {
+                <span>In Active</span>
+            }
+        </div>
+        <div>
+            <b>
+                @Html.DisplayNameFor(model => model.cat_created):
+            </b>
+            @Html.DisplayFor(model => model.cat_created)
+        </div>
+        <div>
+            <b>
+                @Html.DisplayNameFor(model => model.cat_updated):
+            </b>
+            @Html.DisplayFor(model => model.cat_updated)
+        </div>
+        <div>
+            <b>
+                @Html.DisplayNameFor(model => model.tbl_admin.ad_username):
+            </b>
+            @Html.DisplayFor(model => model.tbl_admin.ad_username)
+        </div>
+        <div>
+            <b>
+                @Html.DisplayNameFor(model => model.tbl_product):
+            </b>
+            @Model.tbl_product.Count()
+        </div>
+    </div>
+    @if (Model.cat_fk_ad == Convert.ToInt32(Session["ad_id"]))
+    {
+        <div>
+            @Html.ActionLink("Back to List", "ViewCategories", null, htmlAttributes: new { @class = "bi-arrow-90deg-left" }) |
+            @Html.ActionLink("Edit", "EditCategory", new { id = Model.cat_id }, htmlAttributes: new { @class = "btn btn-outline-primary align-self-center" })
+        </div>
+    }
+    else
+    {
+        <div>
+            @Html.ActionLink("Back to List", "ViewCategories", null, htmlAttributes: new { @class = "bi-arrow-90deg-left" })
+        </div>
+    }
+</main>

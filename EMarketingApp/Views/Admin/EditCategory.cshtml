@@ -1,0 +1,80 @@
+﻿@model EMarketingApp.Models.tbl_category
+
+@{
+    ViewBag.Title = "Edit Category";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<--!>Checked OK</--!>
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Edit Category</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("Index","Admin")">Home</a></li>
+                <li class="breadcrumb-item"><a href="@Url.Action("ViewCategories","Admin")">Categories</a></li>
+                <li class="breadcrumb-item active">Edit Category</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    @using (Html.BeginForm("EditCategory", "Admin", FormMethod.Post, new { enctype = "multipart/form-data", @class = "novalidate" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>Category- @Model.cat_name</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.cat_id)
+            @Html.HiddenFor(model => model.cat_created)
+            @Html.HiddenFor(model => model.cat_updated)
+            @Html.HiddenFor(model => model.cat_fk_ad)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.cat_image, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <img src="@Url.Content(Model.cat_image)" class="mb-5" alt="Category Image" style=" height:50%;width:50% ;border-radius:50px 50px 50px 50px" />
+                    <div class="col-md-10 d-flex">
+                        <p class="text-dark">Upload Image to Change:</p>
+                        <input type="file" name="imgfile" id="imgfile" value="@Model.cat_image" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.cat_name, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.cat_name, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.cat_status, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 d-flex">
+                    <p>
+                        <b>Active- </b>
+                        <input type="radio" class="radio" value="1" @(Model.cat_status == 1 ? "checked" : "") name="cat_status" />
+                    </p>
+                    <span></span>
+                    <p>
+                        <b>In Active- </b>
+                        <input type="radio" value="0" class="radio" @(Model.cat_status == 0 ? "checked" : "") name="cat_status" />
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <button type="submit" value="submit" class="btn btn-success btn-lg">Save</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <p style="color:red">@ViewBag.error</p>
+            </div>
+        </div>
+    }
+
+    <div>
+        @Html.ActionLink("Back to List", "ViewCategories", null, htmlAttributes: new { @class = "bi-arrow-90deg-left" })
+    </div>
+</main>

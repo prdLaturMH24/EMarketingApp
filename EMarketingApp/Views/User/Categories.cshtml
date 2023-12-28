@@ -1,0 +1,58 @@
+﻿@model IEnumerable<EMarketingApp.Models.tbl_category>
+@{
+    ViewBag.Title = "Categories";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+<style>
+
+    .cimg {
+        -webkit-transform 5s;
+        transition: transform 5s;
+    }
+
+        .cimg:hover {
+            -webkit-transform: rotatez(360deg);
+        }
+</style>
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Categories</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("Index","User")">Home</a></li>
+                <li class="breadcrumb-item active">Categories</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    <div class="row" style="margin-bottom:40px">
+
+        <div class="col-lg-7 col-md-8">
+            <div class="row">
+                @if (Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <div class="col-lg-4 col-md-4" style="height:200px;margin-top:100px">
+
+                            <img class="img img-responsive cimg" src="@Url.Content(item.cat_image)" style=" height:100%;width:100% ;border-radius:50px 50px 50px 50px" />
+                            @if (Convert.ToBoolean(item.cat_status))
+                            {
+                                <p class="text-bg-success text-center mt-3">Active</p>
+                                <h4 style="color:#808080; font-family:'Arial Rounded MT';text-align:center"> @Html.ActionLink(@item.cat_name, "ProductsByCategory", new { categoryId = @item.cat_id })</h4>
+
+                            }
+                            else
+                            {
+                                <p class="text-bg-danger text-center mt-3">In Active</p>
+                                <h4 style="color:#808080; font-family:'Arial Rounded MT';text-align:center"> @Html.ActionLink(@item.cat_name, "ProductsByCategory", new { categoryId = @item.cat_id })</h4>
+                            }
+                        </div>
+
+                    }
+                }
+            </div>
+        </div>
+
+    </div>
+</main>
+

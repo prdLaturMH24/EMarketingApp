@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "About";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>@ViewBag.Title</h1>
+        <nav>
+            <ol class="breadcrumb">
+                @if (Convert.ToBoolean(Session["isLoggedIn"]))
+                {
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index","User")">Home</a></li>
+
+                }
+                else
+                {
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index","Auth")">Home</a></li>
+
+                }
+                <li class="breadcrumb-item active">@ViewBag.Title.</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    <div class="content">
+        <h3>@ViewBag.Message</h3>
+        <p>Use this area to provide additional information.</p>
+    </div>
+</main>

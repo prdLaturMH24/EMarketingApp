@@ -1,0 +1,91 @@
+﻿@model EMarketingApp.Models.tbl_product
+@{
+    ViewBag.Title = "Add Product";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<script src="https://kit.fontawesome.com/655fe7a250.js" crossorigin="anonymous"></script>
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Add Product</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("Index","User")">Home</a></li>
+                <li class="breadcrumb-item active">Add Product</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    <div id="main-div">
+        <div id="box" class="img-responsive">
+            @using (Html.BeginForm("AddProduct",
+                            "User",
+                            FormMethod.Post,
+                            new { enctype = "multipart/form-data" }))
+            {
+                <div class="insidebox">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon"><span class="bi bi-pen"></span></div>
+                            @Html.DropDownListFor(x => x.pro_fk_cat, ViewBag.categorylist as SelectList, "--select--", new { @class = "form-control" })
+                        </div>
+                        <span style="color:red">   @Html.ValidationMessageFor(x => x.pro_fk_cat) </span>
+
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon"><span class="bi bi-pen"></span></div>
+                            @*<asp:TextBox ID="TextBox1" runat="server" class="form-control" placeholder="Username" required="required"></asp:TextBox>*@
+                            @Html.TextBoxFor(x => x.pro_name, new { @class = "form-control", @placeholder = "Product Name" })
+
+                        </div>
+                        <span style="color:red">   @Html.ValidationMessageFor(x => x.pro_name) </span>
+
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon"><i class="bi bi-pen pe-1"></i></div>
+                            @Html.TextBoxFor(x => x.pro_price, new { @class = "form-control", @placeholder = "Price" })
+
+                        </div>
+                        <span style="color:red">   @Html.ValidationMessageFor(x => x.pro_price) </span>
+
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon"><i class="bi bi-pen"></i></div>
+                            @Html.TextBoxFor(x => x.pro_des, new { @class = "form-control", @placeholder = "Description" })
+                        </div>
+                        <span style="color:red">   @Html.ValidationMessageFor(x => x.pro_des) </span>
+
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon"><span class="bi bi-file"></span></div>
+
+                            <input type="file" name="imgfile" id="imgfile" class="form-control" required="required" />
+                        </div>
+
+
+                    </div>
+                    <div class="form-group">
+
+                        <input type="submit" value="Add" class="btn btn-success btn-block" />
+
+                    </div>
+
+                    <div class="form-group">
+                        <p style="color:red">@ViewBag.error</p>
+                    </div>
+                </div>
+
+            }
+        </div>
+
+    </div>
+
+</main>
+

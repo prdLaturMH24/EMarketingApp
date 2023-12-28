@@ -1,0 +1,104 @@
+﻿@model List<EMarketingApp.Models.tbl_category>
+@{
+    ViewBag.Title = "Categories";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int srno = 0;
+
+}
+<--!>Checked OK</--!>
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Categories</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("Index","Admin")">Home</a></li>
+                <li class="breadcrumb-item active">Categories</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <p>
+        @Html.ActionLink("Add Category", "CreateCategory", "Admin", null, new { @class = "btn btn-success text-decoration-none" })
+    </p>
+    <table class="table text-center">
+        <tr>
+            <th>Sr. No.</th>
+            <th>
+                Name
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Created On
+            </th>
+            <th>
+                Updated On
+            </th>
+            <th>
+                Added/Updated By
+            </th>
+            <th>
+                <div>
+                    <p style="color:red">@ViewBag.error</p>
+                </div>
+            </th>
+        </tr>
+
+        @for (int i = 0; i < (int)Model.Count(); i++)
+        {
+            srno = srno + 1;
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => srno)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model[i].cat_name)
+                </td>
+
+                @if (Model[i].cat_status == 1)
+                {
+                    <td class="text-center">
+                        Active
+                    </td>
+                }
+                else
+                {
+                    <td class="text-center">
+                        In Active
+                    </td>
+                }
+
+                <td>
+                    @Html.DisplayFor(modelItem => Model[i].cat_created)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model[i].cat_updated)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model[i].tbl_admin.ad_username)
+                </td>
+                @if (Model[i].cat_fk_ad == Convert.ToInt32(Session["ad_id"]))
+                {
+                    <td>
+                        @Html.ActionLink("Edit", "EditCategory", "Admin", new { id = Model[i].cat_id }, new { @class = "btn btn-primary" }) |
+                        @Html.ActionLink("Details", "CategoryDetails", new { id = Model[i].cat_id }, new { @class = "btn btn-secondary" }) |
+                        @Html.ActionLink("Delete", "DeleteCategory", new { id = Model[i].cat_id }, new { @class = "btn btn-danger" })
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        @Html.ActionLink("Details", "CategoryDetails", new { id = Model[i].cat_id }, new { @class = "btn btn-secondary" })
+                    </td>
+                }
+            </tr>
+        }
+
+    </table>
+
+
+</main>
+

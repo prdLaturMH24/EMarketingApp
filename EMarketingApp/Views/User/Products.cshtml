@@ -1,0 +1,139 @@
+﻿@model List<EMarketingApp.Models.tbl_product>
+@{
+    ViewBag.Title = "All Products";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    int srno = 0;
+    var product = new EMarketingApp.Models.tbl_product();
+
+    EMarketingApp.Models.tbl_product OnClick(int index)
+    {
+
+        var selectedProduct = new EMarketingApp.Models.tbl_product();
+        selectedProduct.pro_id = Model[index].pro_id;
+        selectedProduct.pro_name = Model[index].pro_name;
+        selectedProduct.pro_image = Model[index].pro_image;
+        selectedProduct.pro_des = Model[index].pro_des;
+        selectedProduct.pro_price = Model[index].pro_price;
+        selectedProduct.pro_created = Model[index].pro_created;
+        selectedProduct.pro_updated = Model[index].pro_updated;
+        selectedProduct.pro_fk_cat = Model[index].pro_fk_cat;
+        selectedProduct.pro_fk_user = Model[index].pro_fk_user;
+
+        return selectedProduct;
+    }
+
+
+}
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>All Products</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("Index", "User")">Home</a></li>
+                <li class="breadcrumb-item active">All Products</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    <p>
+        @Html.ActionLink("Add Product", "AddProduct", "User", null, new { @class = "btn btn-success text-decoration-none" })
+    </p>
+    <table class="table text-center">
+        <tr>
+            <th>Sr. No.</th>
+            <th>
+                Product Name
+            </th>
+            <th>
+                Product Category
+            </th>
+            <th>
+                Created On
+            </th>
+            <th>
+                Updated On
+            </th>
+            <th>
+                Added/Updated By
+            </th>
+            <th>
+                <div>
+                    <p style="color:red">@ViewBag.error</p>
+                </div>
+            </th>
+        </tr>
+
+        @if (Model.Any())
+        {
+            for (int i = 0; i < (int)Model.Count(); i++)
+            {
+                srno = srno + 1;
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => srno)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model[i].pro_name)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => Model[i].tbl_category.cat_name)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => Model[i].pro_created)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model[i].pro_updated)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model[i].tbl_user.u_name)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "EditProduct", "User", new { productId = Model[i].pro_id }, new { @class = "btn btn-primary" }) |
+                        @*@Html.ActionLink("Details", "ProductDetails", new { productId = Model[i].pro_id }, new { @class = "btn btn-secondary" }) |*@
+                        <button type="button" onclick="@{product = @OnClick(i);} " class="btn btn-secondary" id="detailsBtn" data-toggle="modal" data-target="#detailsModal" >
+                            Details
+                        </button> |
+                        @Html.ActionLink("Delete", "DeleteProduct", new { productId = Model[i].pro_id }, new { @class = "btn btn-danger" })
+                    </td>
+                </tr>
+                                }
+
+                            }
+    </table>
+    @if (product != null)
+    {
+
+        <!-- Modal -->
+        <div class="modal" id="detailsModal">
+            <div class="modal-dialog-scrollable m-lg-auto">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">@product.pro_name.ToString()</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal Body -->
+                    <div class="modal-body">
+                        <img src="@Url.Content(product.pro_image)" alt="Product Img" />
+                        <p><b>Description: </b>@product.pro_des</p>
+                        <p><b>Price: </b>@product.pro_price</p>
+                    </div>
+
+                    <!-- Modal Footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    }
+
+
+</main>
+

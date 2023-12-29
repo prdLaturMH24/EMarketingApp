@@ -239,6 +239,60 @@ namespace EMarketingApp.Controllers
                 return RedirectToAction("Error", "Home", ex);
             }
         }
+
+        [HttpGet]
+        public ActionResult ProductDetails(int productId)
+        {
+            try
+            {
+                if (Session["u_id"] == null)
+                {
+                    return RedirectToAction("Login", "Auth");
+                }
+                if (productId == 0)
+                {
+                    return RedirectToAction("Login", "Auth");
+                }
+
+                var product = db.tbl_product.Include(p => p.tbl_category).Include(p => p.tbl_user).SingleOrDefault(p => p.pro_id == productId);
+
+                if (product == null)
+                {
+                    return RedirectToAction("Products");
+                }
+
+                return View(product);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home", ex);
+            }
+        }
+        [HttpGet]
+        public ActionResult Details(int productId)
+        {
+            try
+            {
+                if (productId == 0)
+                {
+                    return RedirectToAction("ProductsByCategory");
+                }
+
+                var product = db.tbl_product.Include(p => p.tbl_category).SingleOrDefault(p => p.pro_id == productId);
+
+                if (product == null)
+                {
+                    return RedirectToAction("ProductsByCategory");
+                }
+
+                return View(product);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home", ex);
+            }
+        }
+
         private string UploadImgFile(HttpPostedFileBase file, string productName)
         {
             string path = "-1";

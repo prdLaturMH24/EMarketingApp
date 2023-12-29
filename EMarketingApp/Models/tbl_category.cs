@@ -11,7 +11,8 @@ namespace EMarketingApp.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel;
+
     public partial class tbl_category
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,15 +22,21 @@ namespace EMarketingApp.Models
         }
     
         public int cat_id { get; set; }
+        [DisplayName("Category Name")]
         public string cat_name { get; set; }
+        [DisplayName("Category Image")]
         public string cat_image { get; set; }
         public Nullable<int> cat_fk_ad { get; set; }
+        [DisplayName("Category Status")]
         public Nullable<int> cat_status { get; set; }
+        [DisplayName("Created On")]
         public Nullable<System.DateTime> cat_created { get; set; }
+        [DisplayName("Updated On")]
         public Nullable<System.DateTime> cat_updated { get; set; }
-    
+        [DisplayName("Admin")]
         public virtual tbl_admin tbl_admin { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [DisplayName("Products")]
         public virtual ICollection<tbl_product> tbl_product { get; set; }
     }
 }

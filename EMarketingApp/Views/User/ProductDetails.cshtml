@@ -1,0 +1,95 @@
+﻿@model EMarketingApp.Models.tbl_product
+
+@{
+    ViewBag.Title = "Product Details";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Product Details</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("Index","User")">Home</a></li>
+                <li class="breadcrumb-item"><a href="@Url.Action("Products","User")">All Products</a></li>
+                <li class="breadcrumb-item active">Product Details</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row">
+            <h4><b>Product:</b> @Html.DisplayFor(model => model.pro_name)</h4>
+            <hr />
+            <div class="col-lg-4">
+                <dl class="dl-horizontal">
+                    <dt class="text-dark">
+                        @Html.DisplayNameFor(model => model.pro_name)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.pro_name)
+                    </dd>
+                    <dt class="text-dark">
+                        @Html.DisplayNameFor(model => model.pro_des)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.pro_des)
+                    </dd>
+
+                    <dt class="text-dark">
+                        @Html.DisplayNameFor(model => model.pro_price)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.pro_price)
+                    </dd>
+
+                    <dt class="text-dark">
+                        @Html.DisplayNameFor(model => model.pro_created)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.pro_created)
+                    </dd>
+
+                    <dt class="text-dark">
+                        @Html.DisplayNameFor(model => model.pro_updated)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.pro_updated)
+                    </dd>
+
+                    <dt class="text-dark">
+                        @Html.DisplayNameFor(model => model.tbl_category.cat_name)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.tbl_category.cat_name)
+                    </dd>
+
+                    <dt class="text-dark">
+                        @Html.DisplayNameFor(model => model.tbl_user.u_name)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.tbl_user.u_name)
+                    </dd>
+
+                </dl>
+            </div>
+            <div class="col-lg-8">
+                <img src="@Url.Content(Model.pro_image)" alt="Image" style="height: 75%; width: 100%; border-radius: 25px 25px 25px 25px; margin-bottom:10px " />
+            </div>
+        </div>
+        <div class="row">
+            <p>
+                @Html.ActionLink("Back to List", "Products", null, htmlAttributes: new { @class = "bi-arrow-90deg-left" })
+                @Html.ActionLink("Edit", "EditProduct", new { productId = Model.pro_id }, htmlAttributes: new { @class = "btn btn-primary ms-4" })
+            </p>
+        </div>
+    </section>
+
+</main>

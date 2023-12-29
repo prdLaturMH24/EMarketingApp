@@ -21,27 +21,13 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="@Url.Action("Index","User")">Home</a></li>
                 <li class="breadcrumb-item"><a href="@Url.Action("Categories","User")">Categories</a></li>
-                <li class="breadcrumb-item active">Products By Category</li>
+                <li class="breadcrumb-item active">Products By Category: @Model.Select(p => p.tbl_category).First().cat_name</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
 
     <div class="row" style="margin-bottom:40px">
         <div class="col-lg-8 col-md-8">
-
-            @*@using (@Html.BeginForm("Ads", "User"))
-                {
-                    <div class="navbar-form ">
-                        <div class="form-group">
-
-                            <input type="text" class="form-control" placeholder="Search" name="search" id="search">
-                        </div>
-                        <button type="submit" class="btn btn-success">Search</button>
-                    </div>
-                }*@
-
-
-
             <div class="row">
                 @{int x = 0;}
                 @if (Model.Any())
@@ -52,7 +38,7 @@
                         <div class="col-lg-4 col-md-4 mb-5" style="height:200px;margin-top:100px">
 
                             <img class="img img-responsive cimg" src="@Url.Content(item.pro_image)" style=" height:100%;width:100% ;border-radius:50px 50px 50px 50px" />
-                            <h4 style="color:#808080; font-family:'Arial Rounded MT';text-align:center" class="m-5"> @Html.ActionLink(@item.pro_name, "ProductDetails", new { id = @item.pro_id })</h4>
+                            <h4 style="color:#808080; font-family:'Arial Rounded MT';text-align:center" class="m-5"> @Html.ActionLink(@item.pro_name, "Details", new { productId = @item.pro_id })</h4>
 
                         </div>
 

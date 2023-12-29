@@ -11,7 +11,8 @@ namespace EMarketingApp.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel;
+
     public partial class tbl_admin
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,11 +22,13 @@ namespace EMarketingApp.Models
         }
     
         public int ad_id { get; set; }
+        [DisplayName("Name")]
         public string ad_username { get; set; }
         public string ad_password { get; set; }
         public int RoleId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [DisplayName("Categories")]
         public virtual ICollection<tbl_category> tbl_category { get; set; }
         public virtual Role Role { get; set; }
     }

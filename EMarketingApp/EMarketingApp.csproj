@@ -616,6 +616,8 @@
     <Content Include="Views\Admin\Login.cshtml" />
     <Content Include="Views\Shared\_UserLayout.cshtml" />
     <Content Include="Views\User\EditProduct.cshtml" />
+    <Content Include="Views\User\ProductDetails.cshtml" />
+    <Content Include="Views\User\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

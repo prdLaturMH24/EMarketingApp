@@ -14,6 +14,7 @@ namespace EMarketingApp.Controllers
     {
         dbemarketingEntities db = new dbemarketingEntities();
 
+        [HttpGet]
         public ActionResult Index()
         {
             if (Session["ad_id"] != null)
@@ -31,36 +32,56 @@ namespace EMarketingApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(tbl_admin avm)
+        public JsonResult Login(LoginDto login)
         {
-            try
+            if (String.IsNullOrEmpty(login.Username) || String.IsNullOrEmpty(login.Password)) throw new ArgumentNullException(nameof(login));
+            tbl_admin ad = db.tbl_admin.Where(x => x.ad_username == login.Username && x.ad_password == login.Password).SingleOrDefault();
+            if (ad != null)
             {
-                if (String.IsNullOrEmpty(avm.ad_username) || String.IsNullOrEmpty(avm.ad_password)) throw new ArgumentNullException(nameof(avm));
-                tbl_admin ad = db.tbl_admin.Where(x => x.ad_username == avm.ad_username && x.ad_password == avm.ad_password).SingleOrDefault();
-                if (ad != null)
-                {
 
-                    Session["ad_id"] = ad.ad_id.ToString();
-                    Session["ad_username"] = ad.ad_username.ToString();
-                    Session["isAdmin"] = true;
-                    Response.StatusCode = 200; //Successfull Request
-                    return RedirectToAction("Index","Admin");
+                Session["ad_id"] = ad.ad_id.ToString();
+                Session["ad_username"] = ad.ad_username.ToString();
+                Session["isAdmin"] = true;
+                Response.StatusCode = 200;
+                return Json(login,"application/json",contentEncoding: System.Text.Encoding.UTF8,JsonRequestBehavior.AllowGet);
 
-                }
-
-                Response.StatusCode = 400; // Bad Request
-                ViewBag.error = "Invalid username or password";
-                return View();
             }
-            catch (ArgumentNullException ex)
-            {
-                return RedirectToAction("Error", "Home", ex);
-            }
-            catch (Exception ex)
-            {
-                return RedirectToAction("Error","Home", ex);
-            }
+            Response.StatusCode = 400;
+            ViewBag.error = "Invalid username or password";
+            return Json(login);
         }
+
+        //[HttpPost]
+        //public ActionResult Login(tbl_admin avm)
+        //{
+        //    try
+        //    {
+        //        if (String.IsNullOrEmpty(avm.ad_username) || String.IsNullOrEmpty(avm.ad_password)) throw new ArgumentNullException(nameof(avm));
+        //        tbl_admin ad = db.tbl_admin.Where(x => x.ad_username == avm.ad_username && x.ad_password == avm.ad_password).SingleOrDefault();
+        //        if (ad != null)
+        //        {
+
+        //            Session["ad_id"] = ad.ad_id.ToString();
+        //            Session["ad_username"] = ad.ad_username.ToString();
+        //            Session["isAdmin"] = true;
+        //            Response.StatusCode = 200; //Successfull Request
+        //            return RedirectToAction("Index","Admin");
+
+        //        }
+
+        //        Response.StatusCode = 400; // Bad Request
+        //        ViewBag.error = "Invalid username or password";
+        //        return View();
+        //    }
+        //    catch (ArgumentNullException ex)
+        //    {
+        //        return RedirectToAction("Error", "Home", ex);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return RedirectToAction("Error","Home", ex);
+        //    }
+        //}
 
         public ActionResult Logout()
         {

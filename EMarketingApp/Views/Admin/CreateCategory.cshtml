@@ -1,4 +1,5 @@
 ﻿@model EMarketingApp.Models.tbl_category
+@using System.Web.Mvc.Ajax
 
 @{
     ViewBag.Title = "AddCategory";
@@ -7,6 +8,18 @@
 
 <main id="main" class="main">
     <h2>Add Category</h2>
+
+    @using (Ajax.BeginForm(
+        "CreateCategory", //Action Name
+        null, //Route Values
+        new AjaxOptions() { OnSuccess = "fnSuccess", OnFailure = "fnFailure", HttpMethod = "POST" }, //Ajax Options
+        new { enctype = "multipart/form-data" } //Html Attributes
+        )
+        )
+    {
+        
+
+    }
 
     @using (Html.BeginForm("CreateCategory", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
